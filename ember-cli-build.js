@@ -21,8 +21,11 @@ module.exports = function(defaults) {
   // along with the exports of each module as its value.
   app.import('bower_components/bootswatch-dist/js/bootstrap.js');
   app.import('bower_components/highcharts/highcharts.js');
+  app.import('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js');
 
   app.import('bower_components/bootswatch-dist/css/bootstrap.css');
+  app.import('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css');
+
 
   return app.toTree();
 };

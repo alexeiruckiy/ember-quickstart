@@ -1,11 +1,17 @@
-<div class="btn-group">
-    <a href="#" class="btn btn-success" {{action 'select' current}}>
-      {{currentTitle}}
-    </a>
-    <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
-    <ul class="dropdown-menu">
-        <li><a href="#" {{action 'select' 'all_time'}}>{{ selectOptions.all_time }} </a></li>
-        <li><a href="#" {{action 'select' 'today'}}>{{ selectOptions.today }} </a></li>
-        <li><a href="#" {{action 'select' 'week'}}>{{ selectOptions.week }} </a></li>
-    </ul>
+<div class="form-inline">
+    {{#if isShowInterval}}
+      {{interval-comp select=(action 'processInterval')}}
+    {{/if}}
+
+    <div class="btn-group">
+        <a href="#" class="btn btn-success" {{action 'select' current}}>
+          {{currentTitle}}
+        </a>
+        <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          {{#each-in selectOptions as |option title|}}
+              <li><a href="#" {{action 'select' option}}>{{ title }} </a></li>
+          {{/each-in}}
+        </ul>
+    </div>
 </div>

@@ -1,18 +1,22 @@
 <table class="table table-striped table-hover">
-    <caption>Categories List</caption>
+    <caption>Категории</caption>
     <thead>
     <tr>
-        <th>#</th>
+        <th>ID</th>
         <th>Название</th>
         <th>Затраты</th>
         <th>Дата</th>
     </tr>
     </thead>
     <tbody>
-    {{#each categories as |item index|}}
+    {{#each categories as |item|}}
         <tr>
-            <td>{{index}}</td>
-            <td>{{item.name}}</td>
+            <td>{{item.id}}</td>
+            <td>
+              {{#link-to 'categories' item}}
+                {{item.name}}
+              {{/link-to}}
+            </td>
             <td>{{item.cost}}</td>
             <td>{{item.date}}</td>
         </tr>

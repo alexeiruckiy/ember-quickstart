@@ -239,5 +239,6 @@ footer p {
 
 .categories-widget .categories-filter {
   position: absolute;
+  top: -4px;
   right: 15px;
 }

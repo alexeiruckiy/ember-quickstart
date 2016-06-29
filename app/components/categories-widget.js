@@ -1,36 +1,25 @@
 import Ember from 'ember';
 
-let buildChartData = function (categories, allCost) {
-  var data = [];
-  categories.forEach(function(category){
-    data.push({
-      name: category.name,
-      y: category.cost / allCost * 100
-    });
-  });
-  return data;
-};
-
 export default Ember.Component.extend({
   classNames: ['categories-widget'],
   categories: null,
-  cost: Ember.computed('categories.@each.cost', function() {
-    var categories = this.get('categories');
-    var cost = 0;
-    categories.forEach(function(item){
-      cost += item.cost;
+  chartData: Ember.computed.map('categories.@each.cost', function(category) {
+    let allCost = 0;
+    this.get('categories').forEach(function(item){
+      allCost += item.cost;
     });
-    return cost;
+    return {
+      name: category.name,
+      y: category.cost / allCost * 100
+    };
   }),
-  categoriesChanged: Ember.observer('cost', 'categories.[]', function() {
+  categoriesChanged: Ember.observer('chartData', function() {
     Ember.run.once(this, 'renderChart');
   }),
   didInsertElement() {
     this.renderChart();
   },
   renderChart(){
-    let categories = this.get('categories');
-    let cost = this.get('cost');
     this.$('.js-chart-container').highcharts({
       chart: {
         plotBackgroundColor: null,
@@ -58,15 +47,17 @@ export default Ember.Component.extend({
         }
       },
       series: [{
-        name: 'Brands',
+        name: 'Чё по чем',
         colorByPoint: true,
-        data: buildChartData(categories, cost)
+        data: this.get('chartData')
       }]
     });
   },
   actions: {
-    handleFilter(from, to) {
-      this.set('categories', this.get('categories').reverseObjects());
+    handleFilter() {
+      let categories = this.get('categories');
+      categories.popObject();
+      this.set('categories', categories);
     }
   }
 });
