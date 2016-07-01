@@ -1,16 +1,17 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  store: Ember.inject.service(),
   classNames: ['categories-widget'],
   categories: null,
   chartData: Ember.computed.map('categories.@each.cost', function(category) {
     let allCost = 0;
     this.get('categories').forEach(function(item){
-      allCost += item.cost;
+      allCost += item.get('cost');
     });
     return {
-      name: category.name,
-      y: category.cost / allCost * 100
+      name: category.get('name'),
+      y: category.get('cost') / allCost * 100
     };
   }),
   categoriesChanged: Ember.observer('chartData', function() {
@@ -54,10 +55,17 @@ export default Ember.Component.extend({
     });
   },
   actions: {
-    handleFilter() {
-      let categories = this.get('categories');
-      categories.popObject();
-      this.set('categories', categories);
+    handleFilter(from, to) {
+      let parent = this.get('parent');
+      this.get('store').query('category', {
+        parentCategory: parent && parent.id
+      }).then((categories)=>{
+        categories = categories.filter(function(item){
+          var date = item.get('date');
+          return (!from || date >= from) && (!to || date <= to);
+        });
+        this.set('categories', categories);
+      });
     }
   }
 });

@@ -19,9 +19,7 @@ export default Ember.Component.extend({
   intervalChanged: Ember.observer('startDate', 'endDate', function(){
     let startDate = this.get('startDate');
     let endDate = this.get('endDate');
-    if (startDate && endDate) {
-      this.get('select')(startDate, endDate);
-    }
+    this.get('select')(startDate, endDate);
   }),
   didInsertElement(){
     this.$start = this.$('.js-start').datepicker({
