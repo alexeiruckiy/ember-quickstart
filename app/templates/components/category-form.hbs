@@ -1,0 +1,36 @@
+<form class="form-horizontal">
+    <fieldset>
+        <legend>Создание новой категории</legend>
+        <div class="form-group">
+            <label for="categoryName" class="col-lg-2 control-label">Название</label>
+            <div class="col-lg-10">
+                {{input value=name id="categoryName" class="form-control" placeholder="Название"}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="categoryCost" class="col-lg-2 control-label">Стоимость</label>
+            <div class="col-lg-10">
+                {{input value=cost id="categoryCost" class="form-control" placeholder="Стоимость"}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="categoryDate" class="col-lg-2 control-label">Дата</label>
+            <div class="col-lg-10">
+                {{input value=date id="categoryDate" class="form-control js-date" placeholder="Дата"}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">Родительская категория</label>
+            <div class="col-lg-10">
+                <label class="control-label">{{if parent parent.name 'Отсутствует'}}</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+                <button type="reset" class="btn btn-default">Сброс</button>
+                <button type="button" class="btn btn-primary" {{action 'addCategory'}}>Добавить</button>
+            </div>
+        </div>
+    </fieldset>
+</form>

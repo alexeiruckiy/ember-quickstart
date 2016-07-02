@@ -242,3 +242,7 @@ footer p {
   top: -4px;
   right: 15px;
 }
+
+.categories-list .actions-column {
+  text-align: center;
+}
