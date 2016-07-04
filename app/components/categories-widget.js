@@ -3,9 +3,8 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   store: Ember.inject.service(),
   classNames: ['categories-widget'],
-  categories: null,
   chartData: Ember.computed('categories.@each.cost', function () {
-    let parent = this.get('parent'),
+    let parent = this.filterParent(),
       allCost = 0,
       chartData;
     if (parent) {
@@ -31,12 +30,13 @@ export default Ember.Component.extend({
   categoriesChanged: Ember.observer('chartData', function () {
     Ember.run.once(this, 'renderChart');
   }),
-  didInsertElement() {
+  didRender() {
     this.renderChart();
     this.$list = this.$('.js-list-tab');
     this.$form = this.$('.js-form-tab');
   },
   renderChart(){
+    let parent = this.get('parent');
     this.$('.js-chart-container').highcharts({
       chart: {
         plotBackgroundColor: null,
@@ -45,7 +45,7 @@ export default Ember.Component.extend({
         type: 'pie'
       },
       title: {
-        text: 'Затраты категорий на графике'
+        text: parent ? `Затраты ${parent.get('name')} на графике` : 'Затраты категорий на графике'
       },
       tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -70,12 +70,25 @@ export default Ember.Component.extend({
       }]
     });
   },
-
+  filterParent(){
+    let parent = this.get('parent');
+    if (!parent)
+      return null;
+    return this.checkCategoryDate(parent) && parent;
+  },
+  checkCategoryDate(category){
+    let fromDate = this.get('fromDate'),
+        toDate = this.get('toDate'),
+        date = category.get('date');
+    return (!fromDate || date >= fromDate) && (!toDate || date <= toDate);
+  },
   actions: {
     handleFilter(from, to) {
       let parent = this.get('parent'),
-        store = this.get('store'),
-        categories, promise;
+          store = this.get('store'),
+          categories, promise;
+      this.set('fromDate', from);
+      this.set('toDate', to);
       if (parent) {
         promise = store.query('category', {
           parentCategory: parent.id
@@ -84,10 +97,7 @@ export default Ember.Component.extend({
         promise = store.findAll('category');
       }
       promise.then((categories)=> {
-        categories = categories.filter(function (item) {
-          let date = item.get('date');
-          return (!from || date >= from) && (!to || date <= to);
-        });
+        categories = categories.filter(this.checkCategoryDate.bind(this));
         this.set('categories', categories);
       });
     },

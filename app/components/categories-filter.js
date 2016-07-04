@@ -11,6 +11,11 @@ selectOptions[week] = 'За неделю';
 selectOptions[allTime] = 'За все время';
 selectOptions[interval] = 'Промежуток';
 
+let getDate = function(){
+  let now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+};
+
 export default Ember.Component.extend({
   classNames: ['categories-filter'],
 
@@ -25,14 +30,16 @@ export default Ember.Component.extend({
       let from, to;
       switch (date) {
         case today:
-          from = to = new Date();
+          from  = getDate();
+          to = getDate();
           this.set('current', today);
           this.set('currentTitle', selectOptions[today]);
           this.get('filter')(from, to);
           break;
         case week:
-          to = new Date();
-          from = (new Date()).setDate(to.getDate() - 7);
+          to = getDate();
+          from = getDate();
+          from.setDate(to.getDate() - 7);
           this.set('current', week);
           this.set('currentTitle', selectOptions[week]);
           this.get('filter')(from, to);

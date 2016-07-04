@@ -1,23 +1,26 @@
-<form class="form-horizontal">
+<form class="form-horizontal create-form js-create-form">
     <fieldset>
         <legend>Создание новой категории</legend>
-        <div class="form-group">
+        <div class="form-group {{if errors.name 'has-error'}}">
             <label for="categoryName" class="col-lg-2 control-label">Название</label>
             <div class="col-lg-10">
                 {{input value=name id="categoryName" class="form-control" placeholder="Название"}}
             </div>
+            <span class="error-message help-block">Поле "Название" не может быть пустым</span>
         </div>
-        <div class="form-group">
+        <div class="form-group {{if errors.cost 'has-error'}}">
             <label for="categoryCost" class="col-lg-2 control-label">Стоимость</label>
             <div class="col-lg-10">
                 {{input value=cost id="categoryCost" class="form-control" placeholder="Стоимость"}}
             </div>
+            <span class="error-message help-block">Поле "Стоимость" должно быть положительным числом</span>
         </div>
-        <div class="form-group">
+        <div class="form-group {{if errors.date 'has-error'}}">
             <label for="categoryDate" class="col-lg-2 control-label">Дата</label>
             <div class="col-lg-10">
                 {{input value=date id="categoryDate" class="form-control js-date" placeholder="Дата"}}
             </div>
+            <span class="error-message help-block">Поле "Дата" не может быть пустым</span>
         </div>
         <div class="form-group">
             <label class="col-lg-2 control-label">Родительская категория</label>

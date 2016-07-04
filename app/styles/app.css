@@ -246,3 +246,22 @@ footer p {
 .categories-list .actions-column {
   text-align: center;
 }
+.categories-list .alert-info{
+  margin-top: 50px;
+}
+.create-form .form-group{
+  position: relative;
+  margin-bottom: 35px;
+}
+
+.create-form .form-group .error-message {
+  display: none;
+}
+.create-form .form-group.has-error .error-message {
+  display: inline;
+}
+.create-form .error-message{
+  position: absolute;
+  right: 15px;
+  bottom: -35px;
+}
